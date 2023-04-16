@@ -16,18 +16,18 @@ smtp:
   user: YOUR_MAILSERVER_USER
   password: YOUR_MAILSERVER_PW
 sites:
-  - name: YOUR_SITE_NAME
-    url: YOUR_SITE_URL
+  - name: example
+    url: https://pflugradts.de/password-manager/
     splits:
-      - match: "MATCH TO SPLIT CONTENT"
+      - match: "<p class=\"pfl-section\"><span>Releases</span></p>"
         pos: 1
-      - match: "NEXT MATCH TO SPLIT CONTENT"
-        pos: 0
+      - match: "<p>"
+        pos: 1
     extracontent:
-      pre: "<html><body>"
+      pre: "<html><body><p>"
       post: "</body></html>"
       fixrelativelinks: true
     contenttype: html
-    recipients: ["RECIPIENT_1", "RECIPIENT_2"]
+    recipients: [RECIPIENT1@example.org, RECIPIENT2@example.org]
     enabled: true
 
