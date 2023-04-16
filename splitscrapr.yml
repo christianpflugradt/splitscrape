@@ -1,0 +1,33 @@
+logging:
+  level: debug
+  format: "%(asctime)-15s %(levelname)-6s %(message)s"
+  dateformat: "%b %d %H:%M:%S"
+  logtostdout: true
+  file:
+    logtofile: true
+    filename: splitscrapr.log
+    maxbytes: 2000
+    backups: 1
+http:
+  useragent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+smtp:
+  server: YOUR_MAILSERVER
+  port: 587
+  user: YOUR_MAILSERVER_USER
+  password: YOUR_MAILSERVER_PW
+sites:
+  - name: YOUR_SITE_NAME
+    url: YOUR_SITE_URL
+    splits:
+      - match: "MATCH TO SPLIT CONTENT"
+        pos: 1
+      - match: "NEXT MATCH TO SPLIT CONTENT"
+        pos: 0
+    extracontent:
+      pre: "<html><body>"
+      post: "</body></html>"
+      fixrelativelinks: true
+    contenttype: html
+    recipients: ["RECIPIENT_1", "RECIPIENT_2"]
+    enabled: true
+
