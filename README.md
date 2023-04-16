@@ -22,11 +22,11 @@ SPLITSCRAPr comes as a Python script and is meant to be used in combination with
 
 The provided configuration file [splitscrapr.yml](splitscrapr.yml) comes with an example site. A site is a definition of something you want to scrape. It has a name representing it, a url to scrape from and most importantly a list of splits to splitscrape content by. The next section will go into details about that.
 
-If [SPLITSCRAPr](splitscraper.py) is invoked without arguments, the configuration will be read from a file `splitscrapr.yml` in the current working directory. Alternatively a configuration can be passed to the script either as a relative or absolute filename.
+If [SPLITSCRAPr](splitscrapr.py) is invoked without arguments, the configuration will be read from a file `splitscrapr.yml` in the current working directory. Alternatively a configuration can be passed to the script either as a relative or absolute filename.
 
 Examples:
-- python3 splitscrapr.py myconfig.yml
-- python3 splitscrapr.py /opt/splitscrapr/myconfig.yml
+- `python3 splitscrapr.py myconfig.yml`
+- `python3 splitscrapr.py /opt/splitscrapr/myconfig.yml`
 
 **Attention**: Not all websites tolerate bots scraping their content. When using SPLITSCRAPr be aware of the website's general terms and conditions or any other possible violations. Be mindful in how often you scrape a website or your IP address or other means of identification might get blocked.
 
@@ -84,7 +84,7 @@ This section will describe all configurable parameters:
 
 | Field | values | Description |
 | --- | --- | --- |
-| **logging.level** | debug, info, warn, error | error logs only actual failures including stacktraces<br/>there are currently no additional logs at warning level<br/>info informs about updated definitions (when scraped content is updated)<br/>debug prints out everything including when the script starts and finishes, at debug level you can also see how many seconds it took to access and download content |
+| **logging.level** | debug, info, warn, error | `error` logs only actual failures including stacktraces; there are currently no additional logs at `warning` level; `info` informs about updated definitions (when scraped content is updated); `debug` prints out everything including when the script starts and finishes, at debug level you can also see how many seconds it took to access and download content |
 | **logging.format** | string | `fmt` value of Python's `logging.formatter` |
 | **logging.dateformat** | string | `datefmt` value of Python's `logging.formatter` |
 | **logging.logtostdout** | true, false | if true logs are written to stdout |
@@ -108,7 +108,7 @@ This section will describe all configurable parameters:
 | **sites.extracontent.post** | string | adds an arbitrary string after the scraped content |
 | **sites.extracontent.fixrelativelinks** | true, false | if true tries to fix links so they can be clicked from the update notification mail (html specific), e.g. a link `/foo.html` for a site with url `https://bar.baz` will be changed to `https://bar.baz/foo.html` |
 | **sites.contenttype** | plain, html | sets content type for the notification mail to be sent; typically set to html if html content is parsed; in theory all subtypes supported by Python's `email.mime.text.MIMEText` subtype argument are supported |
-| **sites.recipients** | list of valid email addresses | recipients that should be notified about a content update |
+| **sites.recipients** | list of valid e-mail addresses | recipients that should be notified about a content update |
 | **sites.backups** | int | number of backups stored for content, e.g. if set to 3 for a site named `foo` the previous three updates will be stored in files `foo.1`, `foo.2` and `foo.3` in addition to the latest content stored in a file `foo` in the current working directory |
 | **sites.enabled** | true, false | if true the site will be processed, if not it will be skipped (useful if something is not working yet) |
 
@@ -122,7 +122,7 @@ Let's say you have a site `foo` with three splits but they're not working as int
 
 Run the script to get the remaining content after every split: `python3 splitscrapr-debug-site.py foo`
 
-The script will fail due to the list index out of range error but it will write everything processed until then into files:
+The script will fail due to the list index out of range error but it will write everything processed up to that point into files:
 - `foo.0` will contain the original unprocessed content retrieved from the url specified for that site
 - `foo.1` will contain the content after applying the first split
 - `foo.2` will contain the content after applying the second split
