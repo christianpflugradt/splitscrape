@@ -19,9 +19,9 @@ sites:
   - name: example
     url: https://pflugradts.de/password-manager/
     splits:
-      - match: "<p class=\"pfl-section\"><span>Releases</span></p>"
+      - sep: "<p class=\"pfl-section\"><span>Releases</span></p>"
         pos: 1
-      - match: "<p>"
+      - sep: "<p>"
         pos: 1
     extracontent:
       pre: "<html><body><p>"

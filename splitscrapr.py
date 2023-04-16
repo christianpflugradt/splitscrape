@@ -58,7 +58,7 @@ def download_content(site, httpconfig):
 def match(content, splits):
     splitted = content
     for split in splits:
-        splitted = splitted.split(split['match'])[split['pos']]
+        splitted = splitted.split(split['sep'])[split['pos']]
     return splitted
 
 def ref_exists(site):
