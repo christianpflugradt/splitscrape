@@ -17,15 +17,15 @@ smtp:
   password: YOUR_MAILSERVER_PW
 sites:
   - name: example
-    url: https://pflugradts.de/password-manager/
+    url: https://github.com/christianpflugradt/splitscrapr/commits/main
     splits:
-      - sep: "<p class=\"pfl-section\"><span>Releases</span></p>"
+      - sep: "<div class=\"flex-auto min-width-0 js-details-container Details\">"
         pos: 1
-      - sep: "<p>"
-        pos: 1
+      - sep: "</a>"
+        pos: 0
     extracontent:
-      pre: "<html><body><p>"
-      post: "</body></html>"
+      pre: "<html><body>"
+      post: "</a></p></body></html>"
       fixrelativelinks: true
     contenttype: html
     recipients: [RECIPIENT1@example.org, RECIPIENT2@example.org]

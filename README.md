@@ -32,27 +32,28 @@ Examples:
 
 ## Split-scraping by example
 
-SPLITSCRAPr scrapes websites or any other http(s) endpoints. It really doesn't need to be html, it could also scrape a javascript or css file or any other resource representable as text. The [configuration](splitscrapr.yml) provided in this repository contains an example site that checks for new releases of my password manager.
+SPLITSCRAPr scrapes websites or any other http(s) endpoints. It really doesn't need to be html, it could also scrape a javascript or css file or any other resource representable as text. The [configuration](splitscrapr.yml) provided in this repository contains an example site that checks for new commits to this project's main branch.
 
-The site url is `https://pflugradts.de/password-manager/` and there are two splits:
+The site url is `https://github.com/christianpflugradt/splitscrapr/commits/main` and there are two splits:
 ```
-- sep: "<p class=\"pfl-section\"><span>Releases</span></p>"
+- sep: "<div class=\"flex-auto min-width-0 js-details-container Details\">"
 pos: 1
-- sep: "<p>"
-pos: 1
+- sep: "</a>"
+pos: 0
 ```
 
-The part we're interested in is right after the html code `<p class=\"pfl-section\"><span>Releases</span></p>` so we split the content by it and look at the remaining content at pos `1`, since everything before that code is at pos `0`. Each release is enclosed in a `<p>` tag so that'll be our second split and we're again interested in the code at pos `1` because the content comes immediately after the first `<p>` tag. What we're actually grabbing from the site is something like `<a href="/downloads/pwman3/pwman3-2.3.7.jar">2.3.7</a> released 10 Feb 2023</p>`. Because this is invalid html, we define extracontent in the site configuration:
+The part we're interested in is right after the html code `<div class=\"flex-auto min-width-0 js-details-container Details\">` so we split the content by it and look at the remaining content at pos `1`, since everything before that code is at pos `0`. Each commit is represented by a link so the closing tag `</a>` will be our second split. What we're actually grabbing from the site is something like `<p class="mb-1" ><a class="Link--primary text-bold js-navigation-open markdown-title" href="/christianpflugradt/splitscrapr/commit/39cf48f0b7b71e02894ea7a38cafecf8ad5bc527">added initial documentation`. Because this is invalid html, we define extracontent in the site configuration to close the anchor and paragraph and to wrap everything in a html body:
 
 ```
 extracontent:
-  pre: "<html><body><p>"
-  post: "</body></html>"
+  pre: "<html><body>"
+  post: "</a></p></body></html>"
+  fixrelativelinks: true
 ```
 
-With this configuration the final content is something like this: `<html><body><p><a href="/downloads/pwman3/pwman3-2.3.7.jar">2.3.7</a> released 10 Feb 2023</p></body></html>`
+By adding the pre- and post-content and applying the fix-relative-links feature the final content will look like this: `<html><body><p class="mb-1" ><a class="Link--primary text-bold js-navigation-open markdown-title" href="https://github.com/christianpflugradt/splitscrapr/commit/39cf48f0b7b71e02894ea7a3    8cafecf8ad5bc527">added initial documentation</a></p></body></html>`
 
-Upon release of a new version, like a 2.3.8 or a 2.4.0, this exact content will be sent as html e-mail to the recipients listed for that site.
+Upon a new commit to the main branch this content will be sent as html e-mail to the recipients listed for that site.
 
 To add your own site to the configuration you will have to define suitable splits yourself. You will have to check the original content for that, in case of html to view the website as source code. In most modern web browsers you can do that by prefixing the url with `view-source:`. 
 
