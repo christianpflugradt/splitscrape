@@ -68,10 +68,10 @@ def load_ref(site):
     with open(site['name'], 'r') as f:
         return f.read()
 
-def move_backup(file):
+def rotate_backup(file, suffixed=False):
     if os.path.isfile(file):
         target = '%s-1' % file
-        if '-' in file:
+        if suffixed:
             base, suffix = file.rsplit('-', maxsplit=1)
             target = '%s-%d' % (base, int(suffix)+1)
         os.rename(file, target)
@@ -82,8 +82,8 @@ def update_definition(site, content):
     if backups > 0:
         if backups > 1:
             for i in range(backups-1, 0, -1):
-                move_backup('%s-%d' % (name, i))
-        move_backup(name)
+                rotate_backup('%s-%d' % (name, i), suffixed=True)
+        rotate_backup(name)
     with open(name, 'wb') as f:
         f.write(content.encode('utf-8'))
 
