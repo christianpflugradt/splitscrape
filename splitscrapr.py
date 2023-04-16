@@ -68,7 +68,22 @@ def load_ref(site):
     with open(site['name'], 'r') as f:
         return f.read()
 
-def update_definition(name, content):
+def move_backup(file):
+    if os.path.isfile(file):
+        target = '%s-1' % file
+        if '-' in file:
+            base, suffix = file.rsplit('-', maxsplit=1)
+            target = '%s-%d' % (base, int(suffix)+1)
+        os.rename(file, target)
+
+def update_definition(site, content):
+    name = site['name']
+    backups = site['backups']
+    if backups > 0:
+        if backups > 1:
+            for i in range(backups-1, 0, -1):
+                move_backup('%s-%d' % (name, i))
+        move_backup(name)
     with open(name, 'wb') as f:
         f.write(content.encode('utf-8'))
 
@@ -105,7 +120,7 @@ def process_site(site, config):
             if content != load_ref(site):
                 log.info('definition for "%s" has changed; updation definition' % site['name'])
                 try:
-                    update_definition(site['name'], content)
+                    update_definition(site, content)
                 except:
                     log.exception('definition update for site "%s" failed' % site['name'])
                     return
@@ -119,7 +134,7 @@ def process_site(site, config):
                 log.debug('definition for "%s" hasn\'t changed' % site['name'])
         else:
             log.info('no definition for "%s" found; writing initial definition' % site['name'])
-            update_definition(site['name'], content)
+            update_definition(site, content)
 
 def main():
     try:
@@ -138,3 +153,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

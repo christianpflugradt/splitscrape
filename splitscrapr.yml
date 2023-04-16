@@ -29,5 +29,6 @@ sites:
       fixrelativelinks: true
     contenttype: html
     recipients: [RECIPIENT1@example.org, RECIPIENT2@example.org]
+    backups: 3
     enabled: true
 
